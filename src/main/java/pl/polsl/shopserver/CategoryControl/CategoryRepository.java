@@ -1,0 +1,7 @@
+package pl.polsl.shopserver.CategoryControl;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import pl.polsl.shopserver.dbentity.Category;
+
+public interface CategoryRepository extends JpaRepository<Category,Integer> {
+}
