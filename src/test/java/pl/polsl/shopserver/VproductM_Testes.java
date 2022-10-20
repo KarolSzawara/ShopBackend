@@ -1,8 +1,10 @@
 package pl.polsl.shopserver;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
@@ -52,6 +54,14 @@ public class VproductM_Testes {
     public void setUp(){
 
     }
+    @After
+    public void clear(){
+        photoRepostiory.deleteAll();
+        productRepository.deleteAll();
+        catRepository.deleteAll();
+
+
+    }
 
     @Test
     public void testVproductGetUrl(){
@@ -60,6 +70,7 @@ public class VproductM_Testes {
         category=catRepository.save(category);
         Product product=new Product(category,1,"23","100","100","100","100","100","Product","Description","Details");
         product=productRepository.save(product);
+
         Photo photo = new Photo("/src",product);
         photoRepostiory.save(photo);
         VproductM[] list=restTemplate.getForObject(baseUrl,VproductM[].class);

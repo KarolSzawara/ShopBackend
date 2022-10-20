@@ -20,7 +20,7 @@ public class Photo {
     @Column(name = "src_photo", length = 100)
     private String srcPhoto;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.ALL})
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_product")
     private Product idProduct;
 

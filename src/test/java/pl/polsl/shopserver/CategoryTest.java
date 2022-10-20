@@ -1,9 +1,8 @@
 package pl.polsl.shopserver;
 
+import org.junit.After;
 import org.junit.Assert;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -32,6 +31,10 @@ public class CategoryTest {
     @BeforeEach
     public void setUp(){
         baseUrl=baseUrl.concat(":").concat(port+"").concat("/categories");
+    }
+    @After
+    public void deleteAll(){
+        h2Repository.deleteAll();
     }
     @Test
     public void testCategories(){

@@ -5,7 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import pl.polsl.shopserver.Exception.ExceptionsIdExist;
+import pl.polsl.shopserver.Exception.IdExistException;
+import pl.polsl.shopserver.Exception.NullValueException;
+import pl.polsl.shopserver.Exception.ValueOverflowException;
 import pl.polsl.shopserver.dbentity.Photo;
 
 import java.util.List;
@@ -25,11 +27,14 @@ public class PhotoService  {
 
     public Photo addPhoto(Photo photo)
     {
+        if(photo.getSrcPhoto()==null){
+            throw new NullValueException("Brak ściażki zdjecia");
+        }
         if(photo.getSrcPhoto().length()>100){
-            throw new ResponseStatusException(HttpStatus.LENGTH_REQUIRED,"Błąd długości ścieżki pliku");
+            throw new ValueOverflowException("Przepełniona wartość cieżki");
         }
         if(photoRepository.findById(photo.getId()).isPresent()){
-            throw new ExceptionsIdExist("Id zdjecia już istnieje");
+            throw new IdExistException("Id zdjecia już istnieje");
         }
         return photoRepository.save(photo);
     }
