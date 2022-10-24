@@ -64,4 +64,13 @@ public class User {
     @OneToMany(mappedBy = "idUser")
     private Set<Order> orders = new LinkedHashSet<>();
 
+    @Column(name = "refresh_token", length = 45)
+    private String refreshToken;
+
+    @Column(name = "enable", length = 1)
+    private String enable;
+
+    @Column(name = "verfication_token", length = 45)
+    private String verficationToken;
+
 }
