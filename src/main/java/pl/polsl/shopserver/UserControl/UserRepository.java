@@ -10,4 +10,7 @@ import pl.polsl.shopserver.dbentity.User;
 public interface UserRepository extends JpaRepository<User,Integer> {
     @Query(value = "SELECT u.id FROM User u where u.email=:email")
     Integer findUserByEmail(@Param("email")String email);
+
+    @Query(value = "SELECT u.id FROM User u where u.verficationToken=:token")
+    Integer findUserByVerficationToken(@Param("token")String token);
 }

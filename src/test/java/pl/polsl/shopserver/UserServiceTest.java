@@ -1,7 +1,6 @@
 package pl.polsl.shopserver;
-
+import org.junit.Test;
 import org.junit.Assert;
-import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,7 +27,7 @@ public class UserServiceTest {
     UserService userService;
     @Test
     public void RegisterTest(){
-        User user=new User(1,"mail","pass","name","last","ph","1","com","txt","straBe","1","36-3","nrl","213","phon",null,null,"T",null);
+        User user=new User(1,"szawra.karol@gmail.com","pass","name","last","ph","1","com","txt","straBe","1","36-3","nrl","213","phon",null,null,"N",null);
         Object object=userService.registerUser(user);
         Assert.assertNotNull(object);
         user.setId(2);

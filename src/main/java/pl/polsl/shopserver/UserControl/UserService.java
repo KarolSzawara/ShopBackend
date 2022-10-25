@@ -3,6 +3,7 @@ package pl.polsl.shopserver.UserControl;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.polsl.shopserver.Auth.ConfirmationLink;
 import pl.polsl.shopserver.Auth.JwtToken;
 import pl.polsl.shopserver.Exception.EnitityNotFound;
 import pl.polsl.shopserver.Exception.EntityAlreadyExist;
@@ -12,6 +13,7 @@ import pl.polsl.shopserver.JsonEntity.LoginDetails;
 import pl.polsl.shopserver.Services.EmailService;
 import pl.polsl.shopserver.dbentity.User;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Service
@@ -32,8 +34,10 @@ public class UserService {
             throw new EntityAlreadyExist("Użytkownik z tym mailem istnieje");
         }
         userRepository.save(user);
-        String randomCode = RandomString.make(64);
-        emailService.sendEmail("szawra.karol@gmail.com","verfication",randomCode);
+        String verficationLink=ConfirmationLink.createLink();
+        user.setVerficationToken(verficationLink);
+        userRepository.save(user);
+        emailService.sendEmail(user.getEmail(),"Weryfikacja e-maila","http://localhost:4200/verfication?="+verficationLink);
         return new ReturnRegisterResponse(user.getEmail(),"Użytkownik został stworzony");
     }
     public ReturnToken loginUser(LoginDetails loginDetails){
@@ -49,5 +53,26 @@ public class UserService {
            }
         }
         throw new EnitityNotFound("Nie poprawny login lub hasło");
+    }
+    public String confirmEmail(String token){
+        Integer userId=userRepository.findUserByVerficationToken(token);
+        if(userId!=null){
+            throw new EntityNotFoundException("Nie znaleziona użytkownika");
+        }
+        Optional<User> optionalUser=userRepository.findById(userId);
+        User user;
+        if(optionalUser.isPresent()){
+            user=optionalUser.get();
+            if(user.getEnable().equals('T')){
+                throw new EntityAlreadyExist("Użytkownik został już zwerfikowany");
+            }
+            else {
+                user.setEnable("T");
+                userRepository.save(user);
+            }
+
+        }
+        else throw new EntityNotFoundException("Nie znaleziona użytkownika");
+        return "Not found";
     }
 }
