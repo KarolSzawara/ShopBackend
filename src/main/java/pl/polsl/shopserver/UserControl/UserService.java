@@ -26,17 +26,33 @@ public class UserService {
         this.emailService=emailService;
     }
 
-    public ReturnRegisterResponse registerUser(User user)
+    public ReturnRegisterResponse registerUser(RegisterProfile user)
     {
 
         Integer userId=userRepository.findUserByEmail(user.getEmail());
         if(userId!=null){
             throw new EntityAlreadyExist("Użytkownik z tym mailem istnieje");
         }
-        userRepository.save(user);
+        User newUser=User.builder()
+                .email(user.getEmail())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .flatNumber(user.getFlatNumber())
+                .phonNumber(user.getPhonNumber())
+                .companyOrPerson(user.getCompanyOrPerson())
+                .companyName(user.getCompanyName())
+                .nip(user.getNip())
+                .street(user.getStreet())
+                .streetNumber(user.getStreetNumber())
+                .postCode(user.getPostCode())
+                .postTown(user.getPostTown())
+                .password(user.getPassword())
+                .enable("F")
+                .build();
+        userRepository.save(newUser);
         String verficationLink=ConfirmationLink.createLink();
-        user.setVerficationToken(verficationLink);
-        userRepository.save(user);
+        newUser.setVerficationToken(verficationLink);
+        userRepository.save(newUser);
         emailService.sendEmail(user.getEmail(),"Weryfikacja e-maila","http://localhost:4200/verfication?="+verficationLink);
         return new ReturnRegisterResponse(user.getEmail(),"Użytkownik został stworzony");
     }

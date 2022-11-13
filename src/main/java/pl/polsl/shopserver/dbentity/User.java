@@ -15,6 +15,7 @@ import java.util.Set;
 @Table(name = "user")
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user", nullable = false)
     private Integer id;
 
@@ -73,4 +74,20 @@ public class User {
     @Column(name = "verfication_token", length = 45)
     private String verficationToken;
 
+    public User(String email, String password, String firstName, String lastName, String phonNumber, String companyOrPerson, String companyName, String nip, String street, String streetNumber, String postCode, String postTown, String flatNumber, String phoneNumber) {
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phonNumber = phonNumber;
+        this.companyOrPerson = companyOrPerson;
+        this.companyName = companyName;
+        this.nip = nip;
+        this.street = street;
+        this.streetNumber = streetNumber;
+        this.postCode = postCode;
+        this.postTown = postTown;
+        this.flatNumber = flatNumber;
+        this.phoneNumber = phoneNumber;
+    }
 }

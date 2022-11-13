@@ -1,5 +1,6 @@
 package pl.polsl.shopserver.UserControl;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.polsl.shopserver.JsonEntity.LoginDetails;
@@ -10,7 +11,7 @@ import pl.polsl.shopserver.dbentity.User;
 
 @RestController
 @CrossOrigin(origins="http://localhost:4200")
-@RequestMapping("")
+@RequestMapping(value="",produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
     UserService userService;
     UserController(UserService userService){
@@ -21,7 +22,7 @@ public class UserController {
         return ResponseEntity.ok(userService.loginUser(loginDetails));
     }
     @PostMapping("/registr")
-    ResponseEntity<ReturnRegisterResponse> register(@RequestBody User user){
+    ResponseEntity<ReturnRegisterResponse> register(@RequestBody() RegisterProfile user){
         return ResponseEntity.ok(userService.registerUser(user));
     }
     @GetMapping("/verfication")

@@ -12,6 +12,7 @@ import pl.polsl.shopserver.Exception.EntityAlreadyExist;
 import pl.polsl.shopserver.Exception.ValueOverflowException;
 import pl.polsl.shopserver.JsonEntity.LoginDetails;
 import pl.polsl.shopserver.JsonEntity.ReturnToken;
+import pl.polsl.shopserver.UserControl.RegisterProfile;
 import pl.polsl.shopserver.UserControl.UserRepository;
 import pl.polsl.shopserver.UserControl.UserService;
 import pl.polsl.shopserver.dbentity.User;
@@ -27,10 +28,9 @@ public class UserServiceTest {
     UserService userService;
     @Test
     public void RegisterTest(){
-        User user=new User(1,"szawra.karol@gmail.com","pass","name","last","ph","1","com","txt","straBe","1","36-3","nrl","213","phon",null,null,"N",null);
+        RegisterProfile user=new RegisterProfile("szawra.karol@gmail.com","pass","name","last","ph","1","com","txt","straBe","1","36-3","nrl","213");
         Object object=userService.registerUser(user);
         Assert.assertNotNull(object);
-        user.setId(2);
         try {
             userService.registerUser(user);
         }
