@@ -65,7 +65,7 @@ public class User {
     @OneToMany(mappedBy = "idUser")
     private Set<Order> orders = new LinkedHashSet<>();
 
-    @Column(name = "refresh_token", length = 45)
+    @Column(name = "refresh_token", length = 150)
     private String refreshToken;
 
     @Column(name = "enable", length = 1)

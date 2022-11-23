@@ -28,4 +28,18 @@ public class ExceptionHandler {
                 .build();
         return new ResponseEntity<>(exceptionMessage, HttpStatus.LENGTH_REQUIRED);
     }
+    @org.springframework.web.bind.annotation.ExceptionHandler(EntityAlreadyExist.class)
+    public ResponseEntity<ExceptionMessage> generteEntityAlreadyExist(EntityAlreadyExist ex){
+        ExceptionMessage exceptionMessage=ExceptionMessage.builder()
+                .message(ex.getMessage())
+                .build();
+        return new ResponseEntity<>(exceptionMessage, HttpStatus.CONFLICT);
+    }
+    @org.springframework.web.bind.annotation.ExceptionHandler(EnitityNotFound.class)
+    public ResponseEntity<ExceptionMessage> generteEntityNotFound(EnitityNotFound ex){
+        ExceptionMessage exceptionMessage=ExceptionMessage.builder()
+                .message(ex.getMessage())
+                .build();
+        return new ResponseEntity<>(exceptionMessage, HttpStatus.NOT_FOUND);
+    }
 }

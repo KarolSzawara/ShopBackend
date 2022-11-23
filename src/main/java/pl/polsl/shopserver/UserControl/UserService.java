@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.polsl.shopserver.Auth.ConfirmationLink;
 import pl.polsl.shopserver.Auth.JwtToken;
+import pl.polsl.shopserver.Auth.RefreshToken;
 import pl.polsl.shopserver.Exception.EnitityNotFound;
 import pl.polsl.shopserver.Exception.EntityAlreadyExist;
 import pl.polsl.shopserver.JsonEntity.ReturnRegisterResponse;
@@ -53,8 +54,8 @@ public class UserService {
         String verficationLink=ConfirmationLink.createLink();
         newUser.setVerficationToken(verficationLink);
         userRepository.save(newUser);
-        emailService.sendEmail(user.getEmail(),"Weryfikacja e-maila","http://localhost:4200/verfication?="+verficationLink);
-        return new ReturnRegisterResponse(user.getEmail(),"Użytkownik został stworzony");
+        emailService.sendEmail(user.getEmail(),"Weryfikacja e-maila","http://localhost:4200/verfication/"+verficationLink);
+        return new ReturnRegisterResponse(user.getEmail(),"Uzytkownik został stworzony");
     }
     public ReturnToken loginUser(LoginDetails loginDetails){
         Integer userId=userRepository.findUserByEmail(loginDetails.getEmail());
@@ -62,24 +63,33 @@ public class UserService {
            Optional<User> user =userRepository.findById(userId);
            if(user.isPresent())
            {
-               if(user.get().getPassword().equals(loginDetails.getPassword()))
+               User loginUser=user.get();
+               if(loginUser.getPassword().equals(loginDetails.getPassword()))
                {
-                    return new ReturnToken(user.get().getEmail(),JwtToken.creatToken(user.get()));
+                   if(loginUser.getEnable().equals("T")){
+                        String refreshToken=RefreshToken.creatToken(loginUser);
+                        loginUser.setRefreshToken(refreshToken);
+                        userRepository.save(loginUser);
+                       return new ReturnToken(loginUser.getEmail(),JwtToken.creatToken(loginUser), refreshToken);
+                   }
+                   else {
+                       throw new EnitityNotFound("Email nie potwierdzony");
+                   }
                }
            }
         }
-        throw new EnitityNotFound("Nie poprawny login lub hasło");
+        throw new EnitityNotFound("Nie poprawny login lub haslo");
     }
     public String confirmEmail(String token){
         Integer userId=userRepository.findUserByVerficationToken(token);
-        if(userId!=null){
-            throw new EntityNotFoundException("Nie znaleziona użytkownika");
+        if(userId==null){
+            throw new EntityNotFoundException("Nie znaleziona uzytkownika");
         }
         Optional<User> optionalUser=userRepository.findById(userId);
         User user;
         if(optionalUser.isPresent()){
             user=optionalUser.get();
-            if(user.getEnable().equals('T')){
+            if(user.getEnable().equals("T")){
                 throw new EntityAlreadyExist("Użytkownik został już zwerfikowany");
             }
             else {
@@ -88,7 +98,8 @@ public class UserService {
             }
 
         }
-        else throw new EntityNotFoundException("Nie znaleziona użytkownika");
-        return "Not found";
+        else throw new EntityNotFoundException("Nie znaleziona uzytkownika");
+
+        return "Zatwierdzono poprawnie";
     }
 }

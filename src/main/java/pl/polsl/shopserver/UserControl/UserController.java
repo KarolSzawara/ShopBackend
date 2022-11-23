@@ -25,7 +25,7 @@ public class UserController {
     ResponseEntity<ReturnRegisterResponse> register(@RequestBody() RegisterProfile user){
         return ResponseEntity.ok(userService.registerUser(user));
     }
-    @GetMapping("/verfication")
+    @PostMapping("/verfication")
     ResponseEntity<String> verficationEmail(@RequestBody String token){
         return ResponseEntity.ok(userService.confirmEmail(token));
     }

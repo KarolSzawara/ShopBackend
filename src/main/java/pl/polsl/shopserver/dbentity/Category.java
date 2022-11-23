@@ -1,5 +1,6 @@
 package pl.polsl.shopserver.dbentity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,7 +23,8 @@ public class Category {
     @Column(name = "category_name", length = 45)
     private String categoryName;
 
-    @OneToMany(mappedBy = "idCategory")
+    @JsonManagedReference
+    @OneToMany(mappedBy = "idCategory", fetch = FetchType.EAGER)
     private Set<Product> products = new LinkedHashSet<>();
 
     public Category(String categoryName, Set<Product> products) {

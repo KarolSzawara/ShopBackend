@@ -15,8 +15,14 @@ public class VproductMService {
     VproductMService(VproductMRepository vproductMRepository){
         this.vproductMRepository=vproductMRepository;
     }
+
     public ResponseEntity<List<VproductM>> getAll(){
         return new ResponseEntity<>(vproductMRepository.findAll(),HttpStatus.OK);
+    }
+
+    public List<VproductM> getProductByCategory(Integer category){
+        if(category==0||category==null) return vproductMRepository.findAll();
+        return vproductMRepository.findProductByCategory(category);
     }
 
 }

@@ -3,10 +3,7 @@ package pl.polsl.shopserver.dbview.VproductControll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.polsl.shopserver.CategoryControl.CategoryService;
 import pl.polsl.shopserver.dbview.VproductM;
 
@@ -28,5 +25,10 @@ public class VproductMController {
     @GetMapping
     public ResponseEntity<List<VproductM>> getProduct(){
         return vproductMService.getAll();
+    }
+
+    @GetMapping("/{category}")
+    public ResponseEntity<List<VproductM>> getProductByCategory(@PathVariable Integer category){
+        return ResponseEntity.ok(vproductMService.getProductByCategory(category));
     }
 }

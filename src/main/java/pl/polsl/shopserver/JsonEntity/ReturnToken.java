@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ReturnToken {
     String email;
-    String token;
+    String Jwttoken;
+    String RefreshToken;
 }

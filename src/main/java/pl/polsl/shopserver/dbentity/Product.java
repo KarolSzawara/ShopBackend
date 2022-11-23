@@ -1,5 +1,6 @@
 package pl.polsl.shopserver.dbentity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,8 @@ public class Product {
     @Column(name = "id_product", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
+    @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name = "id_category")
     private Category idCategory;
 
