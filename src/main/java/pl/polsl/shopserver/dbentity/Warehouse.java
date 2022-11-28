@@ -21,8 +21,8 @@ public class Warehouse {
     @JoinColumn(name = "id_product_wr")
     private Product idProductWr;
 
-    @Column(name = "quantity_product", length = 45)
-    private String quantityProduct;
+    @Column(name = "quantity_product")
+    private Integer quantityProduct;
 
     @Column(name = "prize_warehouse", length = 45)
     private String prizeWarehouse;

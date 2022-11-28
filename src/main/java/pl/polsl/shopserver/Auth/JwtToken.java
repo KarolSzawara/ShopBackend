@@ -1,7 +1,10 @@
 package pl.polsl.shopserver.Auth;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import pl.polsl.shopserver.Exception.AuthorizationFailed;
+import pl.polsl.shopserver.Exception.TokenExpired;
 import pl.polsl.shopserver.UserControl.Reference;
 import pl.polsl.shopserver.dbentity.User;
 
@@ -19,5 +22,18 @@ public class JwtToken {
                 .setExpiration(new Date(curretnTimeMili+1800000))
                 .signWith(SignatureAlgorithm.HS256, Reference.JWTSecret)
                 .compact();
+    }
+    static public String validateToke(String token){
+
+        try {
+            String email =Jwts.parser().setSigningKey(Reference.JWTSecret).parseClaimsJws(token).getBody().getSubject();
+            return email;
+        }catch (ExpiredJwtException e){
+            throw new TokenExpired();
+        }
+        catch (Exception e){
+            throw new AuthorizationFailed();
+        }
+
     }
 }

@@ -42,4 +42,26 @@ public class ExceptionHandler {
                 .build();
         return new ResponseEntity<>(exceptionMessage, HttpStatus.NOT_FOUND);
     }
+    @org.springframework.web.bind.annotation.ExceptionHandler(AuthorizationFailed.class)
+    public ResponseEntity<ExceptionMessage> generteAuthorizationFailed(){
+        ExceptionMessage exceptionMessage=ExceptionMessage.builder()
+                .message("Failed Authorization")
+                .build();
+        return new ResponseEntity<>(exceptionMessage, HttpStatus.UNAUTHORIZED);
+    }
+    @org.springframework.web.bind.annotation.ExceptionHandler(TokenExpired.class)
+    public ResponseEntity<ExceptionMessage> generteTokenExpired(){
+        ExceptionMessage exceptionMessage=ExceptionMessage.builder()
+                .message("Token expired")
+                .build();
+        return new ResponseEntity<>(exceptionMessage, HttpStatus.UNAUTHORIZED);
+    }
+    @org.springframework.web.bind.annotation.ExceptionHandler(QuantityLimit.class)
+    public ResponseEntity<ExceptionMessage> generteEntityAlreadyExist(QuantityLimit ex){
+        ExceptionMessage exceptionMessage=ExceptionMessage.builder()
+                .message(ex.getMessage())
+                .build();
+        return new ResponseEntity<>(exceptionMessage, HttpStatus.CONFLICT);
+    }
+
 }

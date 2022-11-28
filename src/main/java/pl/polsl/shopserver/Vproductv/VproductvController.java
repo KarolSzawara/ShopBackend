@@ -14,6 +14,9 @@ import java.util.List;
 @RequestMapping(value="details",produces = MediaType.APPLICATION_JSON_VALUE)
 public class VproductvController {
     VproductvService vproductvService;
+    VproductvController(VproductvService vproductvService){
+        this.vproductvService=vproductvService;
+    }
     @GetMapping("/{id}")
     public ResponseEntity<Vproductv> getProductDetails(@PathVariable Integer id){
         return ResponseEntity.ok(vproductvService.getProductById(id));
