@@ -102,4 +102,13 @@ public class UserService {
 
         return "Zatwierdzono poprawnie";
     }
+    public User getUserByToken(String token){
+        String email = JwtToken.validateToke(token);
+        Integer id=userRepository.findUserByEmail(email);
+        Optional<User> userOptional=userRepository.findById(id);
+        if(userOptional.isPresent()){
+            return userOptional.get();
+        }
+        else throw new EnitityNotFound("Użytkownik nie istnieje");
+    }
 }
