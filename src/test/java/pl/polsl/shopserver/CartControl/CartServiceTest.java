@@ -97,9 +97,9 @@ class CartServiceTest {
 
 
     void prepareData(){
-        Product product=productRepository.save(new Product(null,1,"23","100","100","100","100","100","Product","Description","Details"));
+        Product product=productRepository.save(new Product(null,1,"23",100.0,"100","100","100","100","Product","Description","Details"));
         User user=userRepository.save(new User(1,"mail","pass","name","last","ph","1","com","txt","straBe","1","36-3","nrl","213","phon",null,null,"T",null));
         token=JwtToken.creatToken(user);
-        warehouseRepository.save(new Warehouse(1,product,30,"40.2"));
+        warehouseRepository.save(new Warehouse(1,product,30,40.2));
     }
 }

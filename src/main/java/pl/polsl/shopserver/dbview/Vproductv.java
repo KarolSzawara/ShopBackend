@@ -8,7 +8,6 @@ import org.hibernate.annotations.Subselect;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 /**
  * Mapping for DB view
@@ -54,8 +53,8 @@ public class Vproductv {
     @Column(name = "product_number")
     private Integer productNumber;
 
-    @Column(name = "product_prize", length = 45)
-    private String productPrize;
+    @Column(name = "product_prize")
+    private Double productPrize;
 
     @Column(name = "product_weight", length = 45)
     private String productWeight;
@@ -69,8 +68,8 @@ public class Vproductv {
     @Column(name = "src_photo", length = 100)
     private String srcPhoto;
 
-    @Column(name = "quantity_product", length = 45)
-    private String quantityProduct;
+    @Column(name = "quantity_product")
+    private Integer quantityProduct;
 
     public Integer getIdProduct() {
         return idProduct;
@@ -96,7 +95,7 @@ public class Vproductv {
         return productNumber;
     }
 
-    public String getProductPrize() {
+    public Double getProductPrize() {
         return productPrize;
     }
 
@@ -116,7 +115,7 @@ public class Vproductv {
         return srcPhoto;
     }
 
-    public String getQuantityProduct() {
+    public Integer getQuantityProduct() {
         return quantityProduct;
     }
 

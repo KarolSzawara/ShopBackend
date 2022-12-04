@@ -59,7 +59,7 @@ class PhotoControllerTest {
     @Test
     void addPhoto() {
         //given
-        Product product=new Product(null,1,"23","100","100","100","100","100","Product","Description","Details");
+        Product product=new Product(null,1,"23",100.0,"100","100","100","100","Product","Description","Details");
         product=productRepository.save(product);
         Photo photo=new Photo(1,"text",product);
         Photo photo1=new Photo(3,"sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",null);

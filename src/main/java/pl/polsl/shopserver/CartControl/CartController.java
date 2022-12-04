@@ -19,11 +19,11 @@ public class CartController {
         this.cartService=cartService;
     }
     @PostMapping("/add")
-    private ResponseEntity<String> addToCart(@RequestHeader("Authorization") String token, @RequestBody CartItem product){
+    private ResponseEntity<Response> addToCart(@RequestHeader("Authorization") String token, @RequestBody CartItem product){
         if(cartService.addToCart(token,product)){
-            return ResponseEntity.ok("Product został dodany");
+            return ResponseEntity.ok(new Response("Product zostal dodany"));
         }
-        return ResponseEntity.badRequest().body("Bład podczas dodawania");
+        return ResponseEntity.badRequest().body(new Response("Blad podczas dodawania"));
     }
     @GetMapping
     private ResponseEntity<List<Cartlist>> getCart(@RequestHeader("Authorization")String token){

@@ -25,14 +25,22 @@ public class OrderItem {
     @JoinColumn(name = "id_order")
     private Order idOrder;
 
-    @Column(name = "product_id", length = 45)
-    private String productId;
 
     @Column(name = "order_item_quantity")
     private Integer orderItemQuantity;
 
-    @Column(name = "order_item_price", precision = 65)
-    private BigDecimal orderItemPrice;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private Product product;
 
+    @Column(name = "order_item_price")
+    private Double orderItemPrice;
+
+    public OrderItem(Order idOrder, Integer orderItemQuantity, Double orderItemPrice, Product product) {
+        this.idOrder = idOrder;
+        this.orderItemQuantity = orderItemQuantity;
+        this.orderItemPrice = orderItemPrice;
+        this.product = product;
+    }
 }

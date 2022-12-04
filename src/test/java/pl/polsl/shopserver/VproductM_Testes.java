@@ -68,7 +68,7 @@ public class VproductM_Testes {
 
         Category category=new Category("Categoria",null);
         category=catRepository.save(category);
-        Product product=new Product(category,1,"23","100","100","100","100","100","Product","Description","Details");
+        Product product=new Product(category,1,"23",100.0,"100","100","100","100","Product","Description","Details");
         product=productRepository.save(product);
 
         Photo photo = new Photo("/src",product);

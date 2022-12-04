@@ -30,8 +30,7 @@ public class Product {
     @Column(name = "product_vat", length = 45)
     private String productVat;
 
-    @Column(name = "product_prize", length = 45)
-    private String productPrize;
+
 
     @Column(name = "product_weight", length = 45)
     private String productWeight;
@@ -54,7 +53,10 @@ public class Product {
     @Column(name = "product_details", length = 45)
     private String productDetails;
 
-    public Product(Category idCategory, Integer productNumber, String productVat, String productPrize, String productWeight, String productWidth, String productHeight, String productcolDepth, String productName, String productDescription, String productDetails) {
+    @Column(name = "product_prize")
+    private Double productPrize;
+
+    public Product(Category idCategory, Integer productNumber, String productVat, Double productPrize, String productWeight, String productWidth, String productHeight, String productcolDepth, String productName, String productDescription, String productDetails) {
         this.idCategory = idCategory;
         this.productNumber = productNumber;
         this.productVat = productVat;

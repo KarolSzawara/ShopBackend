@@ -35,8 +35,8 @@ public class VproductM {
     @Column(name = "id_product", nullable = false)
     private Integer idProduct;
 
-    @Column(name = "product_prize", length = 45)
-    private String productPrize;
+    @Column(name = "product_prize")
+    private Double productPrize;
 
     @Column(name = "product_name", length = 45)
     private String productName;

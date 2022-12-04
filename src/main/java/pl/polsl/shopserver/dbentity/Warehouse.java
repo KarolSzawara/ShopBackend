@@ -24,8 +24,8 @@ public class Warehouse {
     @Column(name = "quantity_product")
     private Integer quantityProduct;
 
-    @Column(name = "prize_warehouse", length = 45)
-    private String prizeWarehouse;
 
+    @Column(name = "prize_warehouse")
+    private Double prizeWarehouse;
 
 }

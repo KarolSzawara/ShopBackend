@@ -29,7 +29,9 @@ public class Order {
     private Instant orderDate;
 
 
-    @Column(name = "order_sum", length = 45)
-    private String orderSum;
 
+    public Order(User idUser, Instant orderDate) {
+        this.idUser = idUser;
+        this.orderDate = orderDate;
+    }
 }
