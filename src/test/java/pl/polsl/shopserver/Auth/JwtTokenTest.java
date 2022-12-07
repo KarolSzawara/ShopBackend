@@ -1,11 +1,8 @@
 package pl.polsl.shopserver.Auth;
 
-import io.jsonwebtoken.Jwt;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-import pl.polsl.shopserver.dbentity.User;
-
-import static org.junit.jupiter.api.Assertions.*;
+import pl.polsl.shopserver.model.entities.dbentity.User;
 
 class JwtTokenTest {
 

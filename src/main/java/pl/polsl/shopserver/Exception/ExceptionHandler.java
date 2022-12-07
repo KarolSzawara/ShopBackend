@@ -3,7 +3,6 @@ package pl.polsl.shopserver.Exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import pl.polsl.shopserver.dbentity.Photo;
 
 @ControllerAdvice
 public class ExceptionHandler {
@@ -40,7 +39,7 @@ public class ExceptionHandler {
         ExceptionMessage exceptionMessage=ExceptionMessage.builder()
                 .message(ex.getMessage())
                 .build();
-        return new ResponseEntity<>(exceptionMessage, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(exceptionMessage, HttpStatus.BAD_REQUEST);
     }
     @org.springframework.web.bind.annotation.ExceptionHandler(AuthorizationFailed.class)
     public ResponseEntity<ExceptionMessage> generteAuthorizationFailed(){

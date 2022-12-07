@@ -5,11 +5,9 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import pl.polsl.shopserver.Exception.AuthorizationFailed;
 import pl.polsl.shopserver.Exception.TokenExpired;
-import pl.polsl.shopserver.UserControl.Reference;
-import pl.polsl.shopserver.dbentity.User;
+import pl.polsl.shopserver.User.Reference;
+import pl.polsl.shopserver.model.entities.dbentity.User;
 
-import java.time.LocalDate;
-import java.util.Base64;
 import java.util.Date;
 
 public class JwtToken {

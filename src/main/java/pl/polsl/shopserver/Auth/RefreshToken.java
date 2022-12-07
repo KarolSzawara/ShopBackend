@@ -2,8 +2,8 @@ package pl.polsl.shopserver.Auth;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import pl.polsl.shopserver.UserControl.Reference;
-import pl.polsl.shopserver.dbentity.User;
+import pl.polsl.shopserver.User.Reference;
+import pl.polsl.shopserver.model.entities.dbentity.User;
 
 import java.util.Date;
 

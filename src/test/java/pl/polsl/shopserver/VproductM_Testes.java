@@ -4,25 +4,20 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 import pl.polsl.shopserver.TestRepository.CatRepositoryTest;
 import pl.polsl.shopserver.TestRepository.PhotoRepositoryTest;
 import pl.polsl.shopserver.TestRepository.ProductRepositoryTest;
-import pl.polsl.shopserver.dbentity.Category;
-import pl.polsl.shopserver.dbentity.Photo;
-import pl.polsl.shopserver.dbentity.Product;
-import pl.polsl.shopserver.dbview.VproductM;
+import pl.polsl.shopserver.model.entities.dbentity.Category;
+import pl.polsl.shopserver.model.entities.dbentity.Photo;
+import pl.polsl.shopserver.model.entities.dbentity.Product;
+import pl.polsl.shopserver.model.entities.dbview.VproductM;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,classes = ShopserverApplication.class)

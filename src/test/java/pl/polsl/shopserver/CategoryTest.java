@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.web.client.RestTemplate;
 import pl.polsl.shopserver.TestRepository.CatRepositoryTest;
-import pl.polsl.shopserver.dbentity.Category;
+import pl.polsl.shopserver.model.entities.dbentity.Category;
 
 import java.util.HashSet;
 

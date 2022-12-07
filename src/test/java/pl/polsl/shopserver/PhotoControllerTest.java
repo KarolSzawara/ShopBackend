@@ -1,7 +1,5 @@
 package pl.polsl.shopserver;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,12 +15,11 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import pl.polsl.shopserver.PhotoControl.PhotoRepository;
-import pl.polsl.shopserver.PhotoControl.PhotoService;
-import pl.polsl.shopserver.ProductControl.ProductRepository;
-import pl.polsl.shopserver.dbentity.Category;
-import pl.polsl.shopserver.dbentity.Photo;
-import pl.polsl.shopserver.dbentity.Product;
+import pl.polsl.shopserver.Photo.PhotoRepository;
+import pl.polsl.shopserver.Photo.PhotoService;
+import pl.polsl.shopserver.Product.ProductRepository;
+import pl.polsl.shopserver.model.entities.dbentity.Photo;
+import pl.polsl.shopserver.model.entities.dbentity.Product;
 
 import java.util.LinkedList;
 import java.util.List;

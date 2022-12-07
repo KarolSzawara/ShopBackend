@@ -4,13 +4,9 @@ import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import pl.polsl.shopserver.PhotoControl.PhotoService;
-import pl.polsl.shopserver.dbentity.Photo;
-import pl.polsl.shopserver.dbentity.Product;
+import pl.polsl.shopserver.Photo.PhotoService;
+import pl.polsl.shopserver.model.entities.dbentity.Photo;
+import pl.polsl.shopserver.model.entities.dbentity.Product;
 
 import java.util.LinkedList;
 import java.util.List;

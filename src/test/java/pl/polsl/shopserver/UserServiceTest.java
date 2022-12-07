@@ -4,18 +4,15 @@ import org.junit.Assert;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.polsl.shopserver.Exception.EnitityNotFound;
-import pl.polsl.shopserver.Exception.IdExistException;
 import pl.polsl.shopserver.Exception.EntityAlreadyExist;
-import pl.polsl.shopserver.Exception.ValueOverflowException;
 import pl.polsl.shopserver.JsonEntity.LoginDetails;
 import pl.polsl.shopserver.JsonEntity.ReturnToken;
-import pl.polsl.shopserver.UserControl.RegisterProfile;
-import pl.polsl.shopserver.UserControl.UserRepository;
-import pl.polsl.shopserver.UserControl.UserService;
-import pl.polsl.shopserver.dbentity.User;
+import pl.polsl.shopserver.User.RegisterProfile;
+import pl.polsl.shopserver.User.UserRepository;
+import pl.polsl.shopserver.User.UserService;
+import pl.polsl.shopserver.model.entities.dbentity.User;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 

@@ -1,6 +1,5 @@
 package pl.polsl.shopserver;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.jupiter.api.AfterEach;
@@ -10,18 +9,13 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.server.ResponseStatusException;
 import pl.polsl.shopserver.Exception.IdExistException;
 import pl.polsl.shopserver.Exception.NullValueException;
 import pl.polsl.shopserver.Exception.ValueOverflowException;
-import pl.polsl.shopserver.PhotoControl.PhotoRepository;
-import pl.polsl.shopserver.PhotoControl.PhotoService;
-import pl.polsl.shopserver.dbentity.Photo;
-import pl.polsl.shopserver.dbentity.Product;
-
-import java.util.ArrayList;
+import pl.polsl.shopserver.Photo.PhotoRepository;
+import pl.polsl.shopserver.Photo.PhotoService;
+import pl.polsl.shopserver.model.entities.dbentity.Photo;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.mock;
