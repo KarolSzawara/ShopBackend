@@ -7,6 +7,7 @@ import pl.polsl.shopserver.Cart.CartItem;
 import pl.polsl.shopserver.Cart.CartService;
 import pl.polsl.shopserver.Cart.Response;
 import pl.polsl.shopserver.CartList.CartListService;
+import pl.polsl.shopserver.Order.OrderService;
 import pl.polsl.shopserver.model.entities.dbview.Cartlist;
 import java.util.List;
 @RestController
@@ -15,10 +16,12 @@ import java.util.List;
 public class CartController {
     private CartService cartService;
     private CartListService cartListService;
+    private final OrderService orderService;
     @Autowired
-    CartController(CartService cartService,CartListService cartListService){
+    CartController(CartService cartService, CartListService cartListService, OrderService orderService){
         this.cartListService=cartListService;
         this.cartService=cartService;
+        this.orderService=orderService;
     }
 
     @GetMapping
@@ -31,6 +34,11 @@ public class CartController {
             return ResponseEntity.ok(new Response("Product zostal dodany"));
         }
         return ResponseEntity.badRequest().body(new Response("Blad podczas dodawania"));
+    }
+    @PostMapping("/buy")
+    ResponseEntity purchaseCart(@RequestHeader("Authorization")String token,@RequestBody String text){
+        orderService.purchaseCart(token);
+        return ResponseEntity.ok().build();
     }
 
 }

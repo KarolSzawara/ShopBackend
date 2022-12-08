@@ -1,6 +1,7 @@
 package pl.polsl.shopserver.Order;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +14,7 @@ import pl.polsl.shopserver.model.entities.dbentity.*;
 
 import java.time.Instant;
 import java.util.List;
+@Service
 public class OrderService {
     OrderRepostiory orderRepostiory;
     OrderItemRepository orderItemRepository;
@@ -28,7 +30,7 @@ public class OrderService {
         this.userService=userService;
     }
     @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.SERIALIZABLE)
-    void purchaseCart(String token){
+    public void purchaseCart(String token){
         User user=userService.getUserByToken(token);
 
         List<Cart> cartList=cartRepository.findCartByIdUser(user.getId());
@@ -49,6 +51,7 @@ public class OrderService {
         orderItemRepository.save(orderItem);
         cartRepository.delete(cartItem);
     }
+
 
 
 
