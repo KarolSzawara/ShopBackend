@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.polsl.shopserver.Cart.CartRepository;
-import pl.polsl.shopserver.OrderHistory.OrderItemRepository;
+import pl.polsl.shopserver.OrderItem.OrderItemRepository;
 import pl.polsl.shopserver.User.UserService;
 import pl.polsl.shopserver.Warehouse.WarehouseRepository;
 import pl.polsl.shopserver.model.entities.dbentity.Product;

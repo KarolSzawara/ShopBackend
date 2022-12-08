@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import pl.polsl.shopserver.Cart.CartRepository;
 import pl.polsl.shopserver.Exception.QuantityLimit;
-import pl.polsl.shopserver.OrderHistory.OrderItemRepository;
+import pl.polsl.shopserver.OrderItem.OrderItemRepository;
 import pl.polsl.shopserver.User.UserService;
 import pl.polsl.shopserver.Warehouse.WarehouseRepository;
 import pl.polsl.shopserver.model.entities.dbentity.*;
@@ -51,6 +51,7 @@ public class OrderService {
         orderItemRepository.save(orderItem);
         cartRepository.delete(cartItem);
     }
+
 
 
 
