@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import pl.polsl.shopserver.Auth.JwtToken;
 import pl.polsl.shopserver.Exception.EnitityNotFound;
 import pl.polsl.shopserver.Exception.EntityAlreadyExist;
 import pl.polsl.shopserver.JsonEntity.LoginDetails;
@@ -24,6 +25,22 @@ public class UserServiceTest {
     @Autowired
     UserService userService;
     @Test
+    public void LoginUser(){
+        User user=new User(1,"mail","pass","name","last","ph","1","com","txt","straBe","1","36-3","nrl","213","phon",null,null,"T",null);
+        userRepository.save(user);
+        ReturnToken returnToken=userService.loginUser(new LoginDetails(user.getEmail(),user.getPassword()));
+        Assert.assertNotNull(user.getEmail(), JwtToken.validateToke(returnToken.getJwttoken()));
+        try{
+            userService.loginUser(new LoginDetails("",""));
+        }
+        catch (EnitityNotFound e){
+            assertThat(e)
+                    .isInstanceOf(EnitityNotFound.class);
+        }
+
+    }
+
+    @Test
     public void RegisterTest(){
         RegisterProfile user=new RegisterProfile("szawra.karol@gmail.com","pass","name","last","ph","1","com","txt","straBe","1","36-3","nrl","213");
         Object object=userService.registerUser(user);
@@ -37,19 +54,5 @@ public class UserServiceTest {
         }
 
     }
-    @Test
-    public void LoginUser(){
-        User user=new User(1,"mail","pass","name","last","ph","1","com","txt","straBe","1","36-3","nrl","213","phon",null,null,"T",null);
-        userRepository.save(user);
-        ReturnToken returnToken=userService.loginUser(new LoginDetails(user.getEmail(),user.getPassword()));
-        Assert.assertNotNull(returnToken.getJwttoken());
-        try{
-            userService.loginUser(new LoginDetails("",""));
-        }
-        catch (EnitityNotFound e){
-            assertThat(e)
-                    .isInstanceOf(EnitityNotFound.class);
-        }
 
-    }
 }

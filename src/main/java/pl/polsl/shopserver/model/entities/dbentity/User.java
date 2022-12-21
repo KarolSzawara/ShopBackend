@@ -1,5 +1,6 @@
 package pl.polsl.shopserver.model.entities.dbentity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -61,7 +62,7 @@ public class User {
     @Column(name = "phone_number", length = 45)
     private String phoneNumber;
 
-
+    @JsonManagedReference
     @OneToMany(mappedBy = "idUser")
     private Set<Order> orders = new LinkedHashSet<>();
 
