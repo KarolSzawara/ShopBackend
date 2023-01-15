@@ -1,5 +1,6 @@
 package pl.polsl.shopserver.model.entities.dbentity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,7 +17,7 @@ public class Warehouse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_warehouse", nullable = false)
     private Integer id;
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_product_wr")
     private Product idProductWr;

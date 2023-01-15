@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.polsl.shopserver.Cart.CartItem;
 import pl.polsl.shopserver.Cart.CartService;
+import pl.polsl.shopserver.Cart.EditCart;
 import pl.polsl.shopserver.Cart.Response;
 import pl.polsl.shopserver.CartList.CartListService;
 import pl.polsl.shopserver.Order.OrderService;
@@ -40,5 +41,14 @@ public class CartController {
         orderService.purchaseCart(token);
         return ResponseEntity.ok().build();
     }
-
+    @PostMapping("/delete")
+    ResponseEntity deleteFromCart(@RequestHeader("Authorization")String token, @RequestBody Cartlist editCart){
+        cartService.deleteCartItem(token,new EditCart(editCart.getIdCart(),editCart.getOrderItemQuantity()));
+        return ResponseEntity.ok().build();
+    }
+    @PostMapping("/edit")
+    ResponseEntity editFromCart(@RequestBody Cartlist editCart){
+        cartService.editCartItem(new EditCart(editCart.getIdCart(),editCart.getOrderItemQuantity()));
+        return ResponseEntity.ok().build();
+    }
 }

@@ -1,5 +1,6 @@
 package pl.polsl.shopserver.model.entities.dbentity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -20,7 +21,7 @@ public class OrderItem {
     @Column(name = "id_order_item", nullable = false)
     private Integer id;
 
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "id_order")
@@ -30,7 +31,7 @@ public class OrderItem {
     @Column(name = "order_item_quantity")
     private Integer orderItemQuantity;
 
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;

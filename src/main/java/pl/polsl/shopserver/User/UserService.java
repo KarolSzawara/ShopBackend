@@ -62,9 +62,13 @@ public class UserService {
            Optional<User> user =userRepository.findById(userId);
            if(user.isPresent())
            {
+
                User loginUser=user.get();
                if(loginUser.getPassword().equals(loginDetails.getPassword()))
                {
+                   if(loginUser.getEnable().equals("A")){
+                       return new ReturnToken(loginUser.getEmail(),"admin","admin");
+                   }
                    if(loginUser.getEnable().equals("T")){
                         String refreshToken=RefreshToken.creatToken(loginUser);
                         loginUser.setRefreshToken(refreshToken);

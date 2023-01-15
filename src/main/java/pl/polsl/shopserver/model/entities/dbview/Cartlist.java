@@ -1,5 +1,6 @@
 package pl.polsl.shopserver.model.entities.dbview;
 
+import lombok.Getter;
 import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.Subselect;
 

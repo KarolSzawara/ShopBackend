@@ -24,7 +24,7 @@ class OrderServiceTest {
     OrderService orderService;
     @BeforeEach
     void init(){
-        orderService=new OrderService(orderRepostiory,orderItemRepository,cartRepository,warehouseRepository,userService);
+        orderService=new OrderService(orderRepostiory,orderItemRepository,cartRepository,warehouseRepository,userService,null,null,null);
     }
     @Test
     void purchaseCart() {

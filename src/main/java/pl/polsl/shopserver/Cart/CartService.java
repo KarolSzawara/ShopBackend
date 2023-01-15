@@ -79,13 +79,25 @@ public class CartService {
         return true;
 
     }
-    boolean  deleteCartItem(String token,EditCart editCart){
+    public boolean  deleteCartItem(String token,EditCart editCart){
         Optional<Cart> cartOptional= cartRepository.findById(editCart.cartID);
         if(cartOptional.isPresent()) {
             cartRepository.delete(cartOptional.get());
         }
+        else throw new EnitityNotFound("Nie znaleziono produktu");
         return true;
         }
+
+    public boolean  editCartItem(EditCart editCart){
+        Optional<Cart> cartOptional= cartRepository.findById(editCart.cartID);
+        if(cartOptional.isPresent()) {
+            Cart cart=cartOptional.get();
+            cart.setOrderItemQuantity(editCart.productQuantity);
+            cartRepository.save(cart);
+        }
+        else throw new EnitityNotFound("Nie znaleziono produktu");
+        return true;
     }
+}
 
 

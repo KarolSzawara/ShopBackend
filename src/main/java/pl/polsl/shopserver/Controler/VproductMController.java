@@ -1,6 +1,7 @@
 package pl.polsl.shopserver.Controler;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.polsl.shopserver.model.entities.dbview.VproductControll.VproductMService;
@@ -13,7 +14,6 @@ import java.util.List;
 @RequestMapping("/product")
 public class VproductMController {
     private final VproductMService vproductMService;
-
     @Autowired
     public VproductMController(VproductMService vproductMService){
         this.vproductMService=vproductMService;
@@ -28,5 +28,9 @@ public class VproductMController {
     @GetMapping("/{category}")
     public ResponseEntity<List<VproductM>> getProductByCategory(@PathVariable Integer category){
         return ResponseEntity.ok(vproductMService.getProductByCategory(category));
+    }
+    @GetMapping("/search")
+    public ResponseEntity<List<VproductM>> search(@RequestParam String query){
+        return new ResponseEntity<>(vproductMService.searchProduct(query), HttpStatus.OK);
     }
 }

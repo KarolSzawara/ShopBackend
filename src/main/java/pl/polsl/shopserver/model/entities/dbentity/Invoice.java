@@ -17,10 +17,7 @@ public class Invoice {
     @Column(name = "id_invoice", nullable = false)
     private Integer id;
 
-    @MapsId
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_invoice", nullable = false)
-    private Order order;
+
 
     @Column(name = "invoice_date", length = 45)
     private String invoiceDate;
@@ -28,8 +25,9 @@ public class Invoice {
     @Column(name = "invoice_number", length = 45)
     private String invoiceNumber;
 
-    @Column(name = "id_order_in")
-    private Integer idOrderIn;
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_order_in", referencedColumnName = "id_order")
+    private Order idOrderIn;
 
 
 

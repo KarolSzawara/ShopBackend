@@ -1,5 +1,6 @@
 package pl.polsl.shopserver.model.entities.dbentity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,6 +21,7 @@ public class Photo {
     @Column(name = "src_photo", length = 150)
     private String srcPhoto;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_product")
     private Product idProduct;
