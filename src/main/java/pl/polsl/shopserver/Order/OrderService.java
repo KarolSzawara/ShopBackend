@@ -7,10 +7,12 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import pl.polsl.shopserver.Auth.JwtToken;
 import pl.polsl.shopserver.Cart.CartRepository;
+import pl.polsl.shopserver.Exception.NullValueException;
 import pl.polsl.shopserver.Exception.QuantityLimit;
 import pl.polsl.shopserver.Invoices.InvoiceRepository;
 import pl.polsl.shopserver.Invoices.InvoicesViewRepostiory;
 import pl.polsl.shopserver.OrderItem.OrderItemRepository;
+import pl.polsl.shopserver.Product.ProductRepository;
 import pl.polsl.shopserver.Services.EmailService;
 import pl.polsl.shopserver.Services.InvoicesService;
 import pl.polsl.shopserver.User.UserService;
@@ -34,8 +36,10 @@ public class OrderService {
     InvoicesViewRepostiory inRepostiory;
     EmailService emailService;
     InvoiceRepository invoiceRepository;
+    ProductRepository productRepository;
     @Autowired
-    OrderService(OrderRepostiory orderRepostiory, OrderItemRepository orderItemRepository,CartRepository cartRepository,WarehouseRepository warehouseRepository,UserService userService,InvoicesViewRepostiory invoicesViewRepostiory,EmailService emailService,InvoiceRepository invoiceRepository){
+    OrderService(OrderRepostiory orderRepostiory, OrderItemRepository orderItemRepository,CartRepository cartRepository,WarehouseRepository warehouseRepository,UserService userService,InvoicesViewRepostiory invoicesViewRepostiory,EmailService emailService,InvoiceRepository invoiceRepository,ProductRepository productRepository){
+        this.productRepository=productRepository;
         this.cartRepository=cartRepository;
         this.orderItemRepository=orderItemRepository;
         this.orderRepostiory=orderRepostiory;
@@ -63,11 +67,17 @@ public class OrderService {
         nInvoice.setInvoiceDate(localDate.toString());
         Invoice invoiceNum = invoiceRepository.save(nInvoice);
         List<InvoicesView> invView=inRepostiory.findAll();
-        invView=getViewById(invView,order.getId());
+        invView=getViewById(invoiceNum,order.getId());
 
         InvoicesService invoicesService=new InvoicesService();
-        byte[] pdf=invoicesService.generateInvoice(user,invView.toArray(new InvoicesView[invView.size()]));
-        emailService.setInvoicesToUser(user.getEmail(),"Faktura nr:"+invView.get(0).getInvoiceNumber(),"Faktura Vat","Faktura"+invView.get(0).getInvoiceNumber()+".pdf",pdf);
+        if(invView.size()>0){
+            byte[] pdf=invoicesService.generateInvoice(user,invView.toArray(new InvoicesView[invView.size()]));
+            emailService.setInvoicesToUser(user.getEmail(),"Faktura nr:"+invView.get(0).getInvoiceNumber(),"Faktura Vat","Faktura"+invView.get(0).getInvoiceNumber()+".pdf",pdf);
+        }
+        else{
+            throw new NullValueException("Brak danych");
+        }
+
     }
     void purchaseProduct(Cart cartItem, Order order){
 
@@ -85,14 +95,20 @@ public class OrderService {
     }
     public String nextInvoiceNumber(String invoiceN){
         Integer value =Integer.parseInt(invoiceN);
-        return String.format("%08d", value++);
+        value+=1;
+        return String.format("%08d", value);
     }
-    public List<InvoicesView> getViewById(List<InvoicesView> invoicesViews,Integer id){
+    public List<InvoicesView> getViewById(Invoice invoice,Integer id){
         List<InvoicesView> retInvoice=new ArrayList<>();
-        for(InvoicesView temp:invoicesViews){
-            if(temp.getIdOrderIn()==id){
-                retInvoice.add(temp);
+        List<OrderItem> orderItemList=orderItemRepository.findCartByIdUser(id);
+        for(OrderItem orderItem:orderItemList){
+            Optional<Product> product=productRepository.findById(orderItem.getProduct().getId());
+            if(product.isPresent()){
+                retInvoice.add(new InvoicesView(invoice.getId(),invoice.getInvoiceDate(),invoice.getInvoiceNumber(),orderItem.getIdOrder().getId()
+                        ,orderItem.getOrderItemQuantity(),orderItem.getOrderItemPrice()
+                        ,product.get().getProductName(),product.get().getProductVat()));
             }
+
         }
         return retInvoice;
     }

@@ -45,4 +45,6 @@ public class InvoicesView {
     private String productName;
     @Column(name = "product_vat", length = 45)
     private String productVat;
+
+
 }

@@ -18,7 +18,7 @@ public class JwtToken {
                 .setSubject(user.getEmail())
                 .claim("roles","user")
                 .setIssuedAt(new Date(curretnTimeMili))
-                .setExpiration(new Date(curretnTimeMili+1800000))
+                .setExpiration(new Date(curretnTimeMili+1800000*48))
                 .signWith(SignatureAlgorithm.HS256, Reference.JWTSecret)
                 .compact();
     }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.polsl.shopserver.Auth.JwtToken;
 import pl.polsl.shopserver.Exception.EnitityNotFound;
+import pl.polsl.shopserver.Exception.NullValueException;
 import pl.polsl.shopserver.Exception.QuantityLimit;
 import pl.polsl.shopserver.Product.ProductRepository;
 import pl.polsl.shopserver.User.UserRepository;
@@ -33,6 +34,9 @@ public class CartService {
         User user=new User();
         Product product=new Product();
         Cart cart;
+        if(cartItem.productQuantity<=0){
+            throw new NullValueException("Błędna ilość");
+        }
         String email=JwtToken.validateToke(token);
         Integer userId=userRepository.findUserByEmail(email);
         Optional<User> userOptional=userRepository.findById(userId);

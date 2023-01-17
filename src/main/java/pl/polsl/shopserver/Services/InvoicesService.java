@@ -60,8 +60,15 @@ public class InvoicesService {
             addText(new String[]{"Sprzedawca"},50,620,fontNormal,19.5f,1);
             addText(new String[]{"Sklep budowlany","Francuska 12","03-400 Katowice","Nip: 526119820"},50,600,fontNormal,11.5f,15);
             addText(new String[]{"Odbiorca"},400,620,fontNormal,19.5f,1);
-            addText(new String[]{user.getFirstName()+user.getLastName(),user.getStreet()+user.getStreetNumber()+"/"+user.getFlatNumber(),user.getPostCode()+" "+user.getPostTown()}
-                    ,400,600,fontNormal,11.5f,15);
+            if(user.getCompanyOrPerson().equals("F")){
+                addText(new String[]{user.getFirstName()+" "+user.getLastName(),user.getStreet()+user.getStreetNumber()+"/"+user.getFlatNumber(),user.getPostCode()+" "+user.getPostTown()}
+                        ,400,600,fontNormal,11.5f,15);
+            }
+            else{
+                addText(new String[]{user.getFirstName()+" "+user.getLastName(),user.getStreet()+user.getStreetNumber()+"/"+user.getFlatNumber(),user.getPostCode()+" "+user.getPostTown(),"Nip:"+user.getNip()}
+                        ,400,600,fontNormal,11.5f,15);
+            }
+
             int newX=startX;
             int newY=startY;
             for(int i=0;i<headers.length;i++){

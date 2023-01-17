@@ -47,7 +47,6 @@ class CartListServiceTest {
     @AfterEach
     void tearDown() {
         photoRepository.deleteAll();
-        userRepository.deleteAll();
         cartRepository.deleteAll();
     }
 
