@@ -58,7 +58,7 @@ public class OrderHistoryService {
                 }
             }
             if(type==3){
-                if (order.getOrderDate().isBefore(oneYearAgo)&&order.getOrderDate().isAfter(twoYearAgo)){
+                if (order.getOrderDate().isAfter(twoYearAgo)){
                     resHistories.add(order);
                 }
             }
