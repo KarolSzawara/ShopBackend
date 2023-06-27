@@ -25,12 +25,13 @@ public class CategoryService {
         return categoryRepository.save(category) ;
     }
     public Category editCategory(Category category){
-        Optional<Category> opCategory=categoryRepository.findById(category.getId());
-        if(opCategory.isPresent()){
-            Category catToChange=opCategory.get();
-            catToChange.setCategoryName(category.getCategoryName());
-            return categoryRepository.save(catToChange);
-        }
-        else throw new EnitityNotFound("Brak takiej kategori");
+        return categoryRepository
+                .findById(category.getId())
+                .map(existingCategory->{
+                    existingCategory.setCategoryName(category.getCategoryName());
+                    return categoryRepository.save(existingCategory);
+                }).orElseThrow(()->{
+                    throw new EnitityNotFound("Brak takiej kategorii");
+                });
     }
 }

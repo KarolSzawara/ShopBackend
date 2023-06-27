@@ -10,13 +10,13 @@ import java.util.ArrayList;
 public class FilterForRegistriation {
     @Bean
     public FilterRegistrationBean filterRegistrationBean(){
-        FilterRegistrationBean filterRegistrationBean=new FilterRegistrationBean<>();
+        var filterRegistrationBean=new FilterRegistrationBean<>();
         filterRegistrationBean.setFilter(new Jwtfilter());
         filterRegistrationBean.setUrlPatterns(getUrlsForFilter());
         return filterRegistrationBean;
     }
     private ArrayList<String> getUrlsForFilter(){
-        ArrayList<String> arrayList=new ArrayList<>();
+        var arrayList=new ArrayList<String>();
         arrayList.add("/photo/addPhoto");
         return arrayList;
     }

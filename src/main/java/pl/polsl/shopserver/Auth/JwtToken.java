@@ -13,7 +13,7 @@ import java.util.Date;
 public class JwtToken {
     static public String creatToken(User user){
         long curretnTimeMili=System.currentTimeMillis();
-        Date date =new Date(curretnTimeMili);
+        var date =new Date(curretnTimeMili);
         return Jwts.builder()
                 .setSubject(user.getEmail())
                 .claim("roles","user")

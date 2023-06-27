@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import pl.polsl.shopserver.Auth.JwtToken;
 import pl.polsl.shopserver.Cart.CartRepository;
+import pl.polsl.shopserver.Exception.EnitityNotFound;
 import pl.polsl.shopserver.Exception.NullValueException;
 import pl.polsl.shopserver.Exception.QuantityLimit;
 import pl.polsl.shopserver.Invoices.InvoiceRepository;
@@ -56,15 +57,19 @@ public class OrderService {
         List<Cart> cartList=cartRepository.findCartByIdUser(user.getId());
 
         Order order=orderRepostiory.save(new Order(user, Instant.now()));
-        for(Cart ite:cartList){
+        cartList.forEach(ite->{
             purchaseProduct(ite,order);
-        }
+        });
+
+
         LocalDate localDate = LocalDate.now();
         Invoice nInvoice=new Invoice();
+
         Invoice lastInvoice=invoiceRepository.findFirstByOrderByIdDesc();
         nInvoice.setInvoiceNumber(nextInvoiceNumber(lastInvoice.getInvoiceNumber()));
         nInvoice.setIdOrderIn(order);
         nInvoice.setInvoiceDate(localDate.toString());
+
         Invoice invoiceNum = invoiceRepository.save(nInvoice);
         List<InvoicesView> invView=inRepostiory.findAll();
         invView=getViewById(invoiceNum,order.getId());
@@ -81,17 +86,19 @@ public class OrderService {
     }
     void purchaseProduct(Cart cartItem, Order order){
 
-                Optional<Warehouse> oWarehouse = warehouseRepository.getWarehouseByProductId(cartItem.getIdProd().getId());
-        Warehouse warehouse=oWarehouse.get();
-        if(warehouse.getQuantityProduct()<cartItem.getOrderItemQuantity()){
-            throw  new QuantityLimit("Brak takiej ilość produktu");
-        }
-        warehouse.setQuantityProduct(warehouse.getQuantityProduct()-cartItem.getOrderItemQuantity());
-        warehouseRepository.save(warehouse);
-        OrderItem orderItem=new OrderItem(order,cartItem.getOrderItemQuantity(),cartItem.getIdProd().getProductPrize(),cartItem.getIdProd());
-        orderItemRepository.save(orderItem);
-        cartRepository.delete(cartItem);
-
+         warehouseRepository.getWarehouseByProductId(cartItem.getIdProd().getId()).ifPresentOrElse(
+                warehouse -> {
+                    if(warehouse.getQuantityProduct()<cartItem.getOrderItemQuantity())throw new QuantityLimit("Brak takiej ilość produktu");
+                    warehouse.setQuantityProduct(warehouse.getQuantityProduct()-cartItem.getOrderItemQuantity());
+                    warehouseRepository.save(warehouse);
+                    OrderItem orderItem=new OrderItem(order,cartItem.getOrderItemQuantity(),cartItem.getIdProd().getProductPrize(),cartItem.getIdProd());
+                    orderItemRepository.save(orderItem);
+                    cartRepository.delete(cartItem);
+                },
+                ()->{
+                    throw  new EnitityNotFound("Nie znaleziono zmienej");
+                }
+        );
     }
     public String nextInvoiceNumber(String invoiceN){
         Integer value =Integer.parseInt(invoiceN);
@@ -99,17 +106,16 @@ public class OrderService {
         return String.format("%08d", value);
     }
     public List<InvoicesView> getViewById(Invoice invoice,Integer id){
-        List<InvoicesView> retInvoice=new ArrayList<>();
-        List<OrderItem> orderItemList=orderItemRepository.findCartByIdUser(id);
-        for(OrderItem orderItem:orderItemList){
-            Optional<Product> product=productRepository.findById(orderItem.getProduct().getId());
-            if(product.isPresent()){
-                retInvoice.add(new InvoicesView(invoice.getId(),invoice.getInvoiceDate(),invoice.getInvoiceNumber(),orderItem.getIdOrder().getId()
-                        ,orderItem.getOrderItemQuantity(),orderItem.getOrderItemPrice()
-                        ,product.get().getProductName(),product.get().getProductVat()));
-            }
-
-        }
+        var retInvoice=new ArrayList<InvoicesView>();
+        orderItemRepository.findCartByIdUser(id).forEach(
+                orderItem -> {
+                    productRepository.findById(orderItem.getProduct().getId()).ifPresent(product -> {
+                        retInvoice.add(new InvoicesView(invoice.getId(),invoice.getInvoiceDate(),invoice.getInvoiceNumber(),orderItem.getIdOrder().getId()
+                                ,orderItem.getOrderItemQuantity(),orderItem.getOrderItemPrice()
+                                ,product.getProductName(),product.getProductVat()));
+                    });
+                }
+        );
         return retInvoice;
     }
 
