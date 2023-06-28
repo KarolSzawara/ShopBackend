@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class ReturnToken {
-    String email;
-    String Jwttoken;
-    String RefreshToken;
+public record ReturnToken(String email,
+        String Jwttoken,
+        String RefreshToken) {
+
 }

@@ -10,8 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class OrderHistoryResponse {
-    private Integer id_order;
-    private Instant orderDate;
-    private List<OrderItem> orderItems;
+public record OrderHistoryResponse(Integer id_order,Instant orderDate,List<OrderItem> orderItems) {
+
 }
+

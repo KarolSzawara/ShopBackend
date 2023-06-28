@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class ReturnRegisterResponse {
-    String user;
-    String messege;
+public record ReturnRegisterResponse(String user,String messege) {
+
 }

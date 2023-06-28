@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import pl.polsl.shopserver.Exception.EnitityNotFound;
 import pl.polsl.shopserver.Exception.IdExistException;
 import pl.polsl.shopserver.Exception.NullValueException;
 import pl.polsl.shopserver.Exception.ValueOverflowException;
@@ -38,11 +39,8 @@ public class PhotoService  {
         return photoRepository.save(photo);
     }
 
-    public ResponseEntity<Photo> getPhotosById(Integer id){
-        Optional<Photo> photo=photoRepository.findById(id);
-        return photoRepository.findById(id).isPresent()
-                ? new ResponseEntity<Photo>(photo.get(),HttpStatus.OK)
-                : new ResponseEntity<Photo>(HttpStatus.NOT_FOUND);
+    public Photo getPhotosById(Integer id){
+        return photoRepository.findById(id).orElseThrow( throw  new EnitityNotFound("Nie znaleziono zmienej"));
     }
 }
 

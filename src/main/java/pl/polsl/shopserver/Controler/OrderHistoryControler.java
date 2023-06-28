@@ -3,6 +3,7 @@ package pl.polsl.shopserver.Controler;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.polsl.shopserver.JsonEntity.OrderDetails;
+import pl.polsl.shopserver.OrderItem.FilterType;
 import pl.polsl.shopserver.OrderItem.OrderHistoryService;
 import pl.polsl.shopserver.Orderhistory;
 import pl.polsl.shopserver.model.entities.dbentity.Category;
@@ -22,7 +23,7 @@ public class OrderHistoryControler {
     }
     @GetMapping
     private ResponseEntity<List<Orderhistory>> getOrderHistory(@RequestHeader("Authorization")String token,@RequestParam Integer type){
-        return ResponseEntity.ok(orderHistoryService.getOrder(token,type));
+        return ResponseEntity.ok(orderHistoryService.getOrder(token,FilterType.fromId(type)));
     }
     @GetMapping("/orderitem")
     private ResponseEntity<List<OrderDetails> > getOrderDetails(@RequestParam Integer id){

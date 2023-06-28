@@ -36,6 +36,7 @@ public class ProductService {
         List<ProductInfo> productInfo=new ArrayList<>();
         List<Product>products=productRepository.findAll();
         for (Product product:products ) {
+
             Optional<Category> category=productRepository.findCategoryByIdProduct(product.getId());
             Optional<Photo> photo=photoRepository.findProductByIdProduct(product.getId());
             Optional<Warehouse> warehouse=warehouseRepository.getWarehouseByProductId(product.getId());

@@ -62,19 +62,19 @@ public class OrderService {
         });
 
 
-        LocalDate localDate = LocalDate.now();
-        Invoice nInvoice=new Invoice();
+        var localDate = LocalDate.now();
+        var nInvoice=new Invoice();
 
-        Invoice lastInvoice=invoiceRepository.findFirstByOrderByIdDesc();
+        var lastInvoice=invoiceRepository.findFirstByOrderByIdDesc();
         nInvoice.setInvoiceNumber(nextInvoiceNumber(lastInvoice.getInvoiceNumber()));
         nInvoice.setIdOrderIn(order);
         nInvoice.setInvoiceDate(localDate.toString());
 
-        Invoice invoiceNum = invoiceRepository.save(nInvoice);
-        List<InvoicesView> invView=inRepostiory.findAll();
+        var invoiceNum = invoiceRepository.save(nInvoice);
+        var invView=inRepostiory.findAll();
         invView=getViewById(invoiceNum,order.getId());
 
-        InvoicesService invoicesService=new InvoicesService();
+        var invoicesService=new InvoicesService();
         if(invView.size()>0){
             byte[] pdf=invoicesService.generateInvoice(user,invView.toArray(new InvoicesView[invView.size()]));
             emailService.setInvoicesToUser(user.getEmail(),"Faktura nr:"+invView.get(0).getInvoiceNumber(),"Faktura Vat","Faktura"+invView.get(0).getInvoiceNumber()+".pdf",pdf);
