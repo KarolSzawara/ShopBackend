@@ -14,6 +14,7 @@ import pl.polsl.shopserver.Services.EmailService;
 import pl.polsl.shopserver.model.entities.dbentity.User;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -50,7 +51,7 @@ public class UserService {
                 .enable("F")
                 .build();
         userRepository.save(newUser);
-        String verficationLink=ConfirmationLink.createLink();
+        var verficationLink=ConfirmationLink.createLink();
         newUser.setVerficationToken(verficationLink);
         userRepository.save(newUser);
         emailService.sendEmail(user.getEmail(),"Weryfikacja e-maila","http://localhost:4200/verfication/"+verficationLink);
@@ -58,40 +59,34 @@ public class UserService {
     }
     public ReturnToken loginUser(LoginDetails loginDetails){
         Integer userId=userRepository.findUserByEmail(loginDetails.getEmail());
-        if(userId!=null){
-           Optional<User> user =userRepository.findById(userId);
-           if(user.isPresent())
-           {
-
-               User loginUser=user.get();
-               if(loginUser.getPassword().equals(loginDetails.getPassword()))
-               {
-                   if(loginUser.getEnable().equals("A")){
-                       return new ReturnToken(loginUser.getEmail(),"admin","admin");
-                   }
-                   if(loginUser.getEnable().equals("T")){
-                        String refreshToken=RefreshToken.creatToken(loginUser);
-                        loginUser.setRefreshToken(refreshToken);
-                        userRepository.save(loginUser);
-                       return new ReturnToken(loginUser.getEmail(),JwtToken.creatToken(loginUser), refreshToken);
-                   }
-                   else {
-                       throw new EnitityNotFound("Email nie potwierdzony");
-                   }
-               }
-           }
+        if(userId==null) {
+            throw  new EnitityNotFound("Taki użytkownik nie istnieje");
         }
-        throw new EnitityNotFound("Nie poprawny login lub haslo");
+        else {
+            return userRepository.findById(userId).map(user -> {
+                if (user.getPassword().equals(loginDetails.getPassword())) {
+                    if (user.getEnable().equals("A")) {
+                        return new ReturnToken(user.getEmail(), "admin", "admin");
+                    }
+                    if (user.getEnable().equals("T")) {
+                        String refreshToken = RefreshToken.creatToken(user);
+                        user.setRefreshToken(refreshToken);
+                        userRepository.save(user);
+                        return new ReturnToken(user.getEmail(), JwtToken.creatToken(user), refreshToken);
+                    } else {
+                        throw new EnitityNotFound("Email nie potwierdzony");
+                    }
+                } else throw new EnitityNotFound("Nie poprawny login lub haslo");
+            }).orElseThrow(() -> new EnitityNotFound("Taki użytkownik nie istnieje"));
+        }
+
     }
     public String confirmEmail(String token){
         Integer userId=userRepository.findUserByVerficationToken(token);
         if(userId==null){
             throw new EntityNotFoundException("Nie znaleziona uzytkownika");
         }
-        Optional<User> optionalUser=userRepository.findById(userId);
-        User user;
-        if(optionalUser.isPresent()){
-            user=optionalUser.get();
+        userRepository.findById(userId).ifPresentOrElse(user -> {
             if(user.getEnable().equals("T")){
                 throw new EntityAlreadyExist("Użytkownik został już zwerfikowany");
             }
@@ -99,19 +94,19 @@ public class UserService {
                 user.setEnable("T");
                 userRepository.save(user);
             }
-
         }
-        else throw new EntityNotFoundException("Nie znaleziona uzytkownika");
-
+        ,
+        ()->  {
+            throw new EntityNotFoundException("Nie znaleziona uzytkownika");
+        });
         return "Zatwierdzono poprawnie";
     }
     public User getUserByToken(String token){
         String email = JwtToken.validateToke(token);
         Integer id=userRepository.findUserByEmail(email);
-        Optional<User> userOptional=userRepository.findById(id);
-        if(userOptional.isPresent()){
-            return userOptional.get();
-        }
-        else throw new EnitityNotFound("Użytkownik nie istnieje");
+        return userRepository.findById(id).orElseThrow(
+                ()->new EnitityNotFound("Użytkownik nie istnieje")
+        );
+
     }
 }

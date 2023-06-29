@@ -33,34 +33,23 @@ public class ProductService {
     }
 
     public List<ProductInfo> getAllProduct(){
-        List<ProductInfo> productInfo=new ArrayList<>();
-        List<Product>products=productRepository.findAll();
-        for (Product product:products ) {
-
-            Optional<Category> category=productRepository.findCategoryByIdProduct(product.getId());
-            Optional<Photo> photo=photoRepository.findProductByIdProduct(product.getId());
-            Optional<Warehouse> warehouse=warehouseRepository.getWarehouseByProductId(product.getId());
+        var productInfoArray=new ArrayList<ProductInfo>();
+        productRepository.findAll().forEach(product -> {
             ProductInfo pInfo=new ProductInfo();
-            pInfo.setProduct(product);
-            if(category.isPresent()){
-              pInfo.setCategoryId(category.get().getId());
-            }
-            else{
-                pInfo.setCategoryId(null);
-            }
-
-            if(photo.isPresent()){
-                pInfo.setPhoto(photo.get());
-            }
-            if(warehouse.isPresent()){
-                pInfo.setWarehouse(warehouse.get());
-            }
-
-            productInfo.add(pInfo);
-
-        }
-
-        return productInfo;
+            productRepository.findCategoryByIdProduct(product.getId())
+                    .ifPresentOrElse
+                    (
+                        cat->pInfo.setCategoryId(cat.getId())
+                        ,
+                        ()->pInfo.setCategoryId(null)
+                    );
+            photoRepository.findProductByIdProduct(product.getId())
+                    .ifPresent(photo->pInfo.setPhoto(photo));
+            warehouseRepository.getWarehouseByProductId(product.getId())
+                    .ifPresent(warehouse -> pInfo.setWarehouse(warehouse));
+            productInfoArray.add(pInfo);
+        });
+        return productInfoArray;
     }
     @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.SERIALIZABLE)
     public boolean addProduct(ProductInfo productInfo){

@@ -26,8 +26,8 @@ public class EmailService {
     }
     public boolean setInvoicesToUser(String to,String subject,String text,String attachmentName,byte[] att) {
         try {
-            MimeMessage message = emailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            var message = emailSender.createMimeMessage();
+            var helper = new MimeMessageHelper(message, true);
 
             helper.setTo(to);
             helper.setSubject(subject);

@@ -15,10 +15,7 @@ public class VproductvService {
         this.vproductvRepository=vproductvRepository;
     }
    public Vproductv getProductById(Integer id){
-        Optional<Vproductv> product=vproductvRepository.findById(id);
-        if(product.isPresent()){
-            return product.get();
-        }
-        else throw new EnitityNotFound("Nieznaleziono takiego productu");
+        return vproductvRepository.findById(id)
+                .orElseThrow(()->new EnitityNotFound("Nieznaleziono takiego productu"));
     }
 }

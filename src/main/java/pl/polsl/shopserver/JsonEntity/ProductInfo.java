@@ -14,12 +14,12 @@ import pl.polsl.shopserver.model.entities.dbentity.Warehouse;
 @Setter
 @NoArgsConstructor
 
-public record ProductInfo(
-        Product product,
-        Integer categoryId,
-        Photo photo,
-        Warehouse warehouse
-) {
+public class ProductInfo
 
+ {
+     Product product;
+     Integer categoryId;
+     Photo photo;
+     Warehouse warehouse;
 
 }
