@@ -68,4 +68,7 @@ public class Product {
         this.productDescription = productDescription;
         this.productDetails = productDetails;
     }
+    public void changeProductNumberByOne(){
+        this.productNumber+=1;
+    }
 }

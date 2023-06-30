@@ -53,39 +53,34 @@ public class ProductService {
     }
     @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.SERIALIZABLE)
     public boolean addProduct(ProductInfo productInfo){
-        if(productInfo.getPhoto()==null) throw  new NullValueException("Brak zdjecia");
-        Photo photo=productInfo.getPhoto();
-        List<Product> products=productRepository.findAll();
-        if(productInfo.getProduct()==null) throw  new NullValueException("Brak danych produktu");
-        Product product=productInfo.getProduct();
-        product.setProductNumber(products.size()+1);
-        Optional<Category> opCategory=categoryRepository.findById(productInfo.getCategoryId());
-        if(opCategory.isPresent()){
-            product.setIdCategory(opCategory.get());
-        }
-        else throw new EnitityNotFound("Brak kategori");
-        product=productRepository.save(product);
 
-        if(productInfo.getWarehouse()==null) throw  new NullValueException("Brak danych magazynowych");
-        Warehouse warehouse=productInfo.getWarehouse();
-        warehouse.setIdProductWr(product);
-        warehouse=warehouseRepository.save(warehouse);
-        photo.setIdProduct(product);
-        photo=photoRepository.save(photo);
-        photo=photoRepository.save(photo);
+            productRepository.findAll().forEach(it -> {
+                Photo photo=Optional.of(productInfo.getPhoto())
+                        .orElseThrow(()->new NullValueException("Brak zdjecia"));
+                Product product=Optional.of(productInfo.getProduct())
+                        .orElseThrow(()->new NullValueException("Brak danych produktu"));
+                product.changeProductNumberByOne();
+                categoryRepository.findById(productInfo.getCategoryId())
+                        .ifPresentOrElse(category -> product.setIdCategory(category)
+                        ,
+                        ()->{
+                            throw new EnitityNotFound("Brak kategori");
+                        });
+            Warehouse warehouse=Optional.of(productInfo.getWarehouse()).orElseThrow(()->new NullValueException("Brak danych magazynowych"));
+            warehouse.setIdProductWr(product);
+            warehouse=warehouseRepository.save(warehouse);
+            photo.setIdProduct(product);
+            photo=photoRepository.save(photo);
+            photo=photoRepository.save(photo);
+        });
         return true;
 
     }
     @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.SERIALIZABLE)
     public boolean editProduct(ProductInfo productInfo){
-
-        Product product=productInfo.getProduct();
-        Optional<Category> opCategory=categoryRepository.findById(productInfo.getCategoryId());
-        if(opCategory.isPresent()){
-            product.setIdCategory(opCategory.get());
-        }
-        product=productRepository.save(product);
-
+        categoryRepository.findById(productInfo.getCategoryId())
+                .ifPresent(category -> productInfo.getProduct().setIdCategory(category));
+        Product product=productRepository.save(productInfo.getProduct());
         Photo photo=productInfo.getPhoto();
         photo.setIdProduct(product);
         photo=photoRepository.save(photo);

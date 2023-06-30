@@ -29,7 +29,7 @@ public class UserServiceTest {
         User user=new User(1,"mail","pass","name","last","ph","1","com","txt","straBe","1","36-3","nrl","213","phon",null,null,"T",null);
         userRepository.save(user);
         ReturnToken returnToken=userService.loginUser(new LoginDetails(user.getEmail(),user.getPassword()));
-        Assert.assertNotNull(user.getEmail(), JwtToken.validateToke(returnToken.getJwttoken()));
+        Assert.assertNotNull(user.getEmail(), JwtToken.validateToke(returnToken.Jwttoken()));
         try{
             userService.loginUser(new LoginDetails("",""));
         }

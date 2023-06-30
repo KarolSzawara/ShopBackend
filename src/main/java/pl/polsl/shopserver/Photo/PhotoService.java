@@ -40,7 +40,8 @@ public class PhotoService  {
     }
 
     public Photo getPhotosById(Integer id){
-        return photoRepository.findById(id).orElseThrow( throw  new EnitityNotFound("Nie znaleziono zmienej"));
+        return photoRepository.findById(id)
+                .orElseThrow(()->  new EnitityNotFound("Nie znaleziono zmienej"));
     }
 }
 

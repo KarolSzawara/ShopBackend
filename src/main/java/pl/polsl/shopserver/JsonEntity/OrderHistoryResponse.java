@@ -7,9 +7,7 @@ import pl.polsl.shopserver.model.entities.dbentity.OrderItem;
 
 import java.time.Instant;
 import java.util.List;
-@Getter
-@Setter
-@AllArgsConstructor
+
 public record OrderHistoryResponse(Integer id_order,Instant orderDate,List<OrderItem> orderItems) {
 
 }

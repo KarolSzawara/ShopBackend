@@ -58,13 +58,13 @@ public class UserService {
         return new ReturnRegisterResponse(user.getEmail(),"Uzytkownik został stworzony");
     }
     public ReturnToken loginUser(LoginDetails loginDetails){
-        Integer userId=userRepository.findUserByEmail(loginDetails.getEmail());
+        Integer userId=userRepository.findUserByEmail(loginDetails.email());
         if(userId==null) {
             throw  new EnitityNotFound("Taki użytkownik nie istnieje");
         }
         else {
             return userRepository.findById(userId).map(user -> {
-                if (user.getPassword().equals(loginDetails.getPassword())) {
+                if (user.getPassword().equals(loginDetails.password())) {
                     if (user.getEnable().equals("A")) {
                         return new ReturnToken(user.getEmail(), "admin", "admin");
                     }
